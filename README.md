@@ -42,17 +42,17 @@ The Codex integration is implemented using a modular architecture:
 
 ## TACo Encryption & Access Control
 
-The application uses **[TACo](https://github.com/nucypher/taco)** for client-side encryption and on-chain access control. The integration is encapsulated in `hooks/useTaco.ts` and is tightly coupled with the file-upload flow.
+The application uses **[TACo](https://github.com/nucypher/taco-web)** for client-side encryption and on-chain access control. The integration is encapsulated in `hooks/useTaco.ts` and is tightly coupled with the file-upload flow.
 
 Key points:
-
-- Files are encrypted in the browser _before_ they are uploaded to Codex; only ciphertext ever leaves the client.
-- Decryption happens on-demand and only when the connected wallet satisfies the defined TACo **Condition**s.
-- Helper utilities are provided for two common conditions as examples of using TACo:
-  - **Positive balance** of POL (Polygon Amoy)
-  - **Time-limited** access (N seconds from upload)
-- You can define any arbitrary on-chain condition by instantiating a TACo `Condition` in your code.
-- Wallet connectivity (handled transparently by `WalletProvider` and the **Connect Wallet** button) is only required to sign TACo encryption/decryption requests.
+- Files/plaintexts are encrypted in the browser _before_ they are uploaded to Codex or transmitted via Waku – i.e. only ciphertexts ever leave the client.
+- Decryption happens on-demand when the data consumer/recipient pings a cohort of TACo nodes. Decryption material is only provisioned when the data consumer (in this example, authenticated via the signature of a connected wallet) satisfies the pre-specified TACo **Conditions**.
+- Helper utilities are provided for two starter TACo conditions types: 
+  - **Positive balance** of POL (Polygon Amoy).
+  - **Time-limited** access (N seconds from upload).
+- You can define any arbitrary on-chain condition by instantiating a TACo `Condition` in your code – see TACo [docs](https://docs.taco.build/conditions) for more condition logic and types. 
+- Wallet connectivity (handled transparently by `WalletProvider` and the **Connect Wallet** button) is only required to sign TACo encryption/decryption requests and authenticate the data producer and consumer respectively. 
+- You can define various authentication methods and [combine](https://docs.taco.build/authentication/conditioncontext-and-context-variables) them with conditions, including Sign In With Ethereum and even off-chain identities. 
 
 ## Getting Started
 
